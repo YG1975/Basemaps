@@ -1,0 +1,328 @@
+<!-- many links at https://josm.openstreetmap.de/wiki/Maps -->
+<!doctype html>
+<html lang="en">
+  <head>
+  <!-- Link to the stylesheet(s)  -->
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css"><!-- if I put the local library here this does not work well-->
+    <link rel="stylesheet" href="OL3/v3.4.0/css/ol3-layerswitcher.css" type="text/css"> 
+    <!-- Dimension of the map on the webpage  -->
+    <style>
+      .map {
+        height: 600px;
+        width: 100%;
+      }
+    </style>
+    <!-- Link to the OpenLayers library  -->
+    <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script><!-- if I put the local library here this does not work well-->
+    <!-- Link to the layerswitcher library as not yet (as of 2015-02-03) implemented in OpenLayers3  -->
+    <script src="OL3/v3.4.0/build/ol3-layerswitcher.js" type="text/javascript"></script>
+    <title>OpenLayers 3 example</title>
+  </head>
+  
+  
+  <body>
+  <!-- Title of the page  -->
+    <h2>Examples of global WMS base maps</h2>
+    <!-- div called "map" that will be the target of the variable "map"  -->
+    <div id="map" class="map"></div>
+    <div id="projMouse"></div>
+    <!-- Script containing all the necessary elements to display the map  -->
+    <script type="text/javascript">
+   // Base layers
+	 // WMS BlueMarble       
+      
+	var BlueMarble = new ol.layer.Tile({
+            type:'base',
+            visible:true,
+            title: "BlueMarble",
+            source: new ol.source.TileWMS({
+              url: 'http://maps.opengeo.org/geowebcache/service/wms',
+              params: {LAYERS: 'bluemarble', VERSION: '1.1.1'},
+              attributions: [new ol.Attribution({ html: ['Data &copy; NASA Blue Marble, image service by OpenGeo'] })]
+            })
+          })	;
+			
+          
+    var MapQuest = new ol.layer.Group({
+    	title: 'MapQuest layers',
+    	layers: [
+    			new ol.layer.Tile({type:'base',visible:false,title: 'MapQuest osm',source: new ol.source.MapQuest({layer: 'osm'}) }),
+    			new ol.layer.Tile({type:'base',visible:false,title: 'MapQuest sat',source: new ol.source.MapQuest({layer: 'sat'}) }),
+    			new ol.layer.Tile({type:'base',visible:false,title: 'MapQuest hyb',source: new ol.source.MapQuest({layer: 'hyb'}) })
+         	    ] });
+         	    
+    var Bing = new ol.layer.Group({
+    	title: 'Bing layers',
+    	layers: [
+    			new ol.layer.Tile({type:'base',visible:false,title: 'Bing aerial',source: new ol.source.BingMaps({key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3', imagerySet: 'Aerial'}) }),
+    			new ol.layer.Tile({type:'base',visible:false,title: 'Bing aerialwithlabels',source: new ol.source.BingMaps({key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3', imagerySet: 'Aerialwithlabels'}) }),
+    			new ol.layer.Tile({type:'base',visible:false,title: 'Bing roads',source: new ol.source.BingMaps({key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3', imagerySet: 'Road'}) })
+         	    ] });
+         	    
+     var Stamen = new ol.layer.Group({
+    	title: 'Stamen layers',
+    	layers: [
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'Stamen watercolor',
+    				source: new ol.source.Stamen({
+    					layer: 'watercolor'
+    						}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'Stamen terrain',
+    				source: new ol.source.Stamen({
+    					layer: 'terrain'
+    						}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'Stamen toner',
+    				source: new ol.source.Stamen({
+    					layer: 'toner'
+    						}) 
+    					})
+         	    ] });
+         	   // Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA
+         	    
+    var OSM = new ol.layer.Group({
+    	title: 'OSM layers',
+    	layers: [
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'OSM satellite',
+    				source: new ol.source.OSM({
+    					layer: 'sat',
+    					attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenstreeMap</a> contributors.'] })]
+    					}) 
+    				}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'OSM cycles',
+    				source: new ol.source.XYZ({
+    					url: 'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+    					attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenstreeMap</a> contributors.'] })]
+    						}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'OSM humanitarian',
+    				source: new ol.source.XYZ({
+    					url: 'http://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+    					attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenstreeMap</a> contributors.'] })]
+    						}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'OSM transports',
+    				source: new ol.source.XYZ({
+    					url: 'http://tile.memomaps.de/tilegen/{z}/{x}/{y}.png',
+    					attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenstreeMap</a> contributors.'] })]
+    						}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'OSM GPS',
+    				source: new ol.source.XYZ({
+    					url: 'https://gps-a.tile.openstreetmap.org/lines/{z}/{x}/{y}.png',
+    					attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenstreeMap</a> contributors.'] })]
+    						}) 
+    					})
+         	    ] });
+     
+     var ESRI = new ol.layer.Group({
+    	title: 'ESRI layers',
+    	layers: [
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'ESRI Physical',
+    				source: new ol.source.XYZ({
+    					url: 'http://server.arcgisonline.com/ArcGIS/rest/services/'+'World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+    					attributions: [new ol.Attribution({ html: ['Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+      'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'] })]
+    							}) 
+    					}),
+    			new ol.layer.Tile({
+    				type:'base',
+    				visible:false,
+    				title: 'ESRI Topo',
+    				source: new ol.source.XYZ({
+    					url: 'http://server.arcgisonline.com/ArcGIS/rest/services/'+'World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    					attributions: [new ol.Attribution({ html: ['Tiles &copy; <a href="http://services.arcgisonline.com/ArcGIS/' +
+      'rest/services/World_Topo_Map/MapServer">ArcGIS</a>'] })]
+    							}) 
+    					}),
+         	    ] 
+         	    });
+     
+    
+    /*var Apple = new ol.layer.Tile({
+       		   source: new ol.source.XYZ({
+              
+               url: 'http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_EN/{Z}/{X}/{Y}.png";'}),
+                title: 'Apple'
+                });*/
+
+    
+    var NaturalEarth = new ol.layer.Tile({
+    title:'Natural Earth',
+    type: 'base',
+    visible: false,
+    source: new ol.source.TileJSON({
+    		url: 'http://api.tiles.mapbox.com/v3/' +'mapbox.natural-earth-hypso-bathy.jsonp',
+    		crossOrigin: 'anonymous',
+    		attributions: [new ol.Attribution({ 
+       		 	//html: ['Tiles &copy; <a href="http://here.com/">Nokia</a>'] 
+       		 		})]
+    		//attributions: [new ol.Attribution({ html: ['Tiles &copy; <a href="http://here.com/">Nokia</a>'] })]
+     		 })
+      })
+      
+      
+      var Nokia = new ol.layer.Tile({
+        type:'base',
+        visible:false,
+        title: 'Nokia',
+        source: new ol.source.XYZ({ 
+        	 url: 'https://2.maps.nlp.nokia.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24',
+       		 attributions: [new ol.Attribution({ 
+       		 	html: ['Tiles &copy; <a href="http://here.com/">Nokia</a>'] 
+       		 		})]
+      			})
+    })
+    
+   /* var thunderForest = new ol.layer.Tile({
+        type:'base',
+        visible:true,
+        title: 'thunderForest',
+        source: new ol.source.XYZ({ 
+        url: 'http://{s}.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png',
+        attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'] })]
+      })
+    })*/
+    
+    
+    var cartodb = new ol.layer.Tile({
+        type:'base',
+        visible:false,
+        title: 'cartodb',
+        source: new ol.source.XYZ({ 
+        url: 'https://cartocdn_a.global.ssl.fastly.net/base-light/{z}/{x}/{y}.png',
+        attributions: [new ol.Attribution({ html: ['&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'] })]
+      })
+    })
+
+            
+        
+      
+      // WMS layer PREVIEW of cyclones risk     
+      var cy_risk = new ol.layer.Tile({
+				title: "Cyclones risk",
+				visible: false,
+				source: new ol.source.TileWMS({
+					url: 'http://preview.grid.unep.ch:8080/geoserver/wms',
+					params: {'LAYERS': 'preview:cy_risk'},
+					attributions: [new ol.Attribution({
+						html: '&copy; ' 
+						+ '2013 ' 
+						+ '<a href="http://www.unep.org" target="_blank">' 
+						+ 'UNEP</a>' 
+						+ ' / ' 
+						+ '<a href="http://www.unisdr.org" target="_blank">' 
+						+ 'UNISDR</a>' 
+						+ ' |' 
+					})]
+				})
+			});
+            
+        // WMS layer PREVIEW of cyclones buffers     
+      var cy_buffers = new ol.layer.Tile({
+   				 visible: false,
+				title: "Cyclones buffers",
+				source: new ol.source.TileWMS({
+					url: 'http://preview.grid.unep.ch:8080/geoserver/wms',
+					params: {'LAYERS': 'preview:cy_buffers'},
+					attributions: [new ol.Attribution({
+						html: '&copy; ' 
+						    + '2013 ' 
+							+ '<a href="http://www.unep.org" target="_blank">' 
+							+ 'UNEP</a>' 
+						    + ' / ' 
+							+ '<a href="http://www.unisdr.org" target="_blank">' 
+							+ 'UNISDR</a>' 
+							+ ' |'
+					})]
+				})
+			});
+                
+        // WMS layer of rivers       
+      var Rivers = new ol.layer.Tile({
+				title: "Rivers",
+				visible: false,
+				source: new ol.source.TileWMS({
+					url: 'http://preview.grid.unep.ch:8080/geoserver/wms',
+					params: {'LAYERS': 'preview:Rivers'},
+					attributions: [new ol.Attribution({
+						html: '<a href="http://www.mapability.com/index1.html" target="_blank">' 
+						    + 'VMAP0</a>' 
+							+ ' / ' 
+							+ '<a href="http://www.esri.com/data/data-maps" target="_blank">' 
+							+ 'ESRI</a>' 
+							+ ' |'
+					})]
+				})
+			});
+			
+            
+                
+        // Controls       
+            var zoomSlider = new ol.control.ZoomSlider();
+			var scaleLineControl = new ol.control.ScaleLine();
+			var fullScreenControl = new ol.control.FullScreen();
+			var mousePositionControl = new ol.control.MousePosition({
+				coordinateFormat: ol.coordinate.createStringXY(4),
+				projection: 'EPSG:4326',
+				className: 'projMouse',
+				target: document.getElementById('projMouse'),
+				undefinedHTML: '&nbsp;'
+			});
+			
+      var layerSwitcher = new ol.control.LayerSwitcher();
+      
+      var map = new ol.Map({
+				// Linking the map with the HTML div
+				target: 'map',
+				// Adding layers to the map
+				layers: [
+					new ol.layer.Group({
+						title:'Base maps',
+						layers: [OSM, Stamen, MapQuest, Bing, ESRI, BlueMarble, cartodb, Nokia, NaturalEarth]
+					}),
+					new ol.layer.Group({
+						title:'Overlays',
+						layers: [cy_buffers, cy_risk, Rivers]
+					})
+				],
+				view: new ol.View({
+					center: ol.proj.transform([37.41, 8.82], 'EPSG:4326', 'EPSG:3857'), zoom: 4
+				}),
+				// Adding controls to the map
+				
+				controls: ol.control.defaults().extend([
+				    zoomSlider, scaleLineControl, fullScreenControl, mousePositionControl, layerSwitcher
+					])
+			});
+
+    </script>
+  </body>
+</html>
