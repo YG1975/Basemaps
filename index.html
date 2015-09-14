@@ -307,9 +307,32 @@
       var layerSwitcher = new ol.control.LayerSwitcher();
       
       
+      
+   //=======================================================================================================================================
+   //ICONS
+   //=======================================================================================================================================      
+      iconStyle = new ol.style.Style({
+            image : new ol.style.Icon(({
+                anchor : [ 40, 46 ],
+                anchorXUnits : 'fraction',
+                anchorYUnits : 'pixels',
+                opacity : 1,
+                src : 'OL3/v3.4.0/examples/data/icon.png'
+            }))
+        });
+	vectorSource = new ol.source.Vector({
+            features : []
+        })
+	vectorLayer = new ol.layer.Vector({
+            source : vectorSource,
+            style : iconStyle
+        });
+
+      
+      
    //=======================================================================================================================================
     //MAP
- //=======================================================================================================================================
+ //========================================================================================================================================
       var map = new ol.Map({
 				// Linking the map with the HTML div
 				target: 'map',
@@ -322,6 +345,10 @@
 					new ol.layer.Group({
 						title:'Overlays',
 						layers: [cy_buffers, cy_risk, Rivers]
+					}),
+					new ol.layer.Group({
+						title:'Marker',
+						layers: [vectorLayer]
 					})
 				],
 				view: new ol.View({
@@ -333,6 +360,7 @@
 				    zoomSlider, scaleLineControl, fullScreenControl, mousePositionControl, layerSwitcher
 					])
 			});
+			
 
     </script>
   </body>
