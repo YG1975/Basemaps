@@ -38,9 +38,9 @@
             type:'base',
             visible:true,
             title: "BlueMarble",
-            source: new ol.source.TileWMS({
-              url: 'http://neowms.sci.gsfc.nasa.gov/wms/wms',
-              params: {LAYERS: 'BlueMarbleNG', TILED: true},
+            source: new ol.source.Tile({
+              url: 'http://neowms.sci.gsfc.nasa.gov/wms/wms/',
+              params: {LAYERS: 'BlueMarbleNG', VERSION: '1.1.1'},
               attributions: [new ol.Attribution({ html: ['Data &copy; NASA Blue Marble'] })]
             })
           })	;
