@@ -57,7 +57,7 @@
             })
           })	;
 			
-          
+   /*       
     var MapQuest = new ol.layer.Group({
     	title: 'MapQuest layers',
     	layers: [
@@ -65,6 +65,7 @@
     			new ol.layer.Tile({type:'base',visible:false,title: 'MapQuest sat',source: new ol.source.MapQuest({layer: 'sat'}) }),
     			new ol.layer.Tile({type:'base',visible:false,title: 'MapQuest hyb',source: new ol.source.MapQuest({layer: 'hyb'}) })
          	    ] });
+    */
          	    
     var Bing = new ol.layer.Group({
     	title: 'Bing layers',
@@ -352,7 +353,7 @@
 				layers: [
 					new ol.layer.Group({
 						title:'Base maps',
-						layers: [OSM, Stamen, MapQuest, Bing, ESRI, BlueMarble, cartodb, Nokia, NaturalEarth]
+						layers: [OSM, Stamen, Bing, ESRI, BlueMarble, cartodb, Nokia, NaturalEarth]
 					}),
 					new ol.layer.Group({
 						title:'Overlays',
