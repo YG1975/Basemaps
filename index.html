@@ -33,16 +33,7 @@
    // Base layers
 //=======================================================================================================================================
 	 
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    // WMS BlueMarble new       
+// WMS BlueMarble new       
       
 	var BlueMarble = new ol.layer.Tile({
             type:'base',
@@ -67,7 +58,19 @@
          	    ] });
     */
          	    
-    var Bing = new ol.layer.Group({
+    var Mundialis = new ol.layer.Tile({
+            type:'base',
+            visible:true,
+            title: "Mundialis",
+            source: new ol.source.TileWMS({
+              url: 'http://ows.mundialis.de/services/service?',
+              params: {LAYERS: 'TOPO-WMS', TILED: true}	   
+            })
+          })	;
+	    
+	    
+	    
+     var Bing = new ol.layer.Group({
     	title: 'Bing layers',
     	layers: [
     			new ol.layer.Tile({type:'base',visible:false,title: 'Bing aerial',source: new ol.source.BingMaps({key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3', imagerySet: 'Aerial'}) }),
@@ -353,7 +356,7 @@
 				layers: [
 					new ol.layer.Group({
 						title:'Base maps',
-						layers: [OSM, Stamen, Bing, ESRI, BlueMarble, cartodb, Nokia, NaturalEarth]
+						layers: [OSM, Stamen, Mundialis, Bing, ESRI, BlueMarble, cartodb, Nokia, NaturalEarth]
 					}),
 					new ol.layer.Group({
 						title:'Overlays',
